@@ -8,5 +8,12 @@
     "start": "node server.js"
   },
   "author": "Servio Mora",
-  "license": "BSD-2-Clause"
+  "license": "BSD-2-Clause",
+  "dependencies": {
+    "express": "~4.13.4",
+    "sequelize": "~3.19.3",
+    "express-handlebars": "~3.0.0",
+    "mysql": "~2.10.2",
+    "body-parser": "~1.15.0"
+  }
 }
