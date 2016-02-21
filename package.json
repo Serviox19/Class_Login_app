@@ -1,0 +1,12 @@
+{
+  "name": "RCB_class_login",
+  "version": "0.0.0",
+  "description": "Login with Authentication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Servio Mora",
+  "license": "BSD-2-Clause"
+}
