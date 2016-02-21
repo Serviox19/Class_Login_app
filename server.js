@@ -3,7 +3,7 @@ var app = express();
 var PORT = 3000;
 
 //bodyParser
-var bodyParser = require('bodyParser');
+var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false}));
 
 //database
@@ -15,10 +15,12 @@ var exphbs = require('express-handlebars');
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
+app.use(express.static(__dirname + '/public'));
+
 
 //routes
 app.get('/', function(req, res) {
-    res.render('index');
+    res.render('home');
 });
 
 
