@@ -17,4 +17,16 @@ app.set('view engine', 'handlebars');
 
 
 //routes
+app.get('/', function(req, res) {
+    res.render('index');
+});
 
+
+
+
+//database connection with sequelize
+connection.sync().then(function() {
+  app.listen(PORT, function() {
+      console.log("Listening on:" + PORT)
+  });
+});
