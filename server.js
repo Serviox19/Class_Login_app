@@ -76,10 +76,30 @@ var User = connection.define('user', {
 });
 */
 
+//debugging tool for querying table
+/*User.findAll({
+  where: {
+    email: 'test2@email.com'
+  }
+}).then(function(foundObject) {
+  foundObject.forEach(function(data) {
+    console.log(data);
+  })
+});*/
+
+app.use(session({
+  secret: 'This is top secret stuff',
+  resave: true,
+  saveUninitialized: true,
+  cookie : { secure : false, maxAge : (4 * 60 * 60 * 1000) }, // 4 hours
+}));
+
+
+
 
 //routes
 app.get('/', function(req, res) {
-    res.render('home', {msg: req.query.msg});
+    res.render('home', {title: "Welcome to RCB"});
 });
 
 app.get('/login', function(req, res) {
@@ -87,7 +107,7 @@ app.get('/login', function(req, res) {
 });
 
 app.post('/', function(req, res){
-
+  console.log(req.body);
 });
 
 
