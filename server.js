@@ -98,7 +98,7 @@ app.use(session({
 
 
 //routes
-app.get('/', function(req, res) {
+app.get('/home', function(req, res) {
     res.render('home', {title: "Welcome to RCB"});
 });
 
@@ -106,8 +106,13 @@ app.get('/login', function(req, res) {
     res.render('login');
 });
 
-app.post('/', function(req, res){
-  console.log(req.body);
+app.post('/home', function(req, res){
+  User.create(req.body).then(function(result){
+    res.redirect('/login');
+  }).catch(function(err) {
+    console.log(err);
+    res.redirect('/?msg=' + err.errors[0].message);
+  });
 });
 
 
