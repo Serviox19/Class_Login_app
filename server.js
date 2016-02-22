@@ -97,13 +97,14 @@ app.use(session({
 
 
 
+
 //routes
 app.get('/home', function(req, res) {
     res.render('home', {title: "Welcome to RCB"});
 });
 
 app.get('/login', function(req, res) {
-    res.render('login');
+    res.render('login', {title: "Login to your Account"});
 });
 
 app.post('/home', function(req, res){
@@ -113,6 +114,38 @@ app.post('/home', function(req, res){
     console.log(err);
     res.redirect('/?msg=' + err.errors[0].message);
   });
+});
+
+//login to class using credentials from register page
+app.post('/login', function(req, res) {
+  var email = req.body.email;
+  var password = req.body.password;
+
+  User.findOne({
+    where: {
+      email: email,
+      password: password
+    }
+  }).then(function(user){
+    if(user){
+      req.session.authenticated = user;
+      res.redirect('/dashboard');
+    } else {
+      res.redirect('/?msg=Invalid login');
+    }
+  }).catch(function(err){
+    throw err;
+  });
+});
+
+app.get('/dashboard', function(req,res) {
+
+  // if user is authenticated
+  if(req.session.authenticated){
+    res.render("dashboard");
+  } else {
+    res.redirect("/?msg=you are not logged in");
+  }
 });
 
 
