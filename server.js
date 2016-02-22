@@ -1,6 +1,8 @@
 var express = require('express');
+var path = require('path');
 var app = express();
 var PORT = 3000;
+var exphbs = require('express-handlebars');
 
 //bodyParser
 var bodyParser = require('body-parser');
@@ -11,17 +13,23 @@ var Sequelize = require('sequelize');
 var connection = new Sequelize('', 'root');
 
 //handlebars setup
-var exphbs = require('express-handlebars');
+app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(express.static(__dirname + '/public'));
+app.use(express.static(__dirname + 'public'));
 
 
 //routes
 app.get('/', function(req, res) {
-    res.render('home');
+    res.render('home', {msg: req.query.msg});
 });
+
+app.get('/login', function(req, res) {
+    res.render('login');
+});
+
+
 
 
 
