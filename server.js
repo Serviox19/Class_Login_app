@@ -3,6 +3,7 @@ var path = require('path');
 var app = express();
 var PORT = 3000;
 var exphbs = require('express-handlebars');
+var mysql = require('mysql');
 
 //bodyParser
 var bodyParser = require('body-parser');
@@ -13,11 +14,53 @@ var Sequelize = require('sequelize');
 var connection = new Sequelize('', 'root');
 
 //handlebars setup
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.join(_dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use(express.static(__dirname + 'public'));
+app.use("/public", express.static(_dirname + '/public'));
+
+//sequelize user object
+var User = connection.define('user', {
+  firstname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: false
+  },
+  lastname: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: false
+  },
+  email: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      len: {
+        args: [5,10],
+        msg: "Your password must be between 5-10 characters"
+      },
+      isUppercase: true
+    }
+  },
+  student: {
+    type: Sequelize.BOOLEAN
+  },
+  teacher: {
+    type: Sequelize.BOOLEAN
+  },
+}, {
+  hooks: {
+    beforeCreate: function(input){
+      input.password = bcrypt.hashSync(input.password, 10);
+    }
+  }
+});
 
 
 //routes
@@ -29,6 +72,9 @@ app.get('/login', function(req, res) {
     res.render('login');
 });
 
+app.post('/', function(req, res){
+
+});
 
 
 
