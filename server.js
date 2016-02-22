@@ -4,6 +4,8 @@ var app = express();
 var PORT = 3000;
 var exphbs = require('express-handlebars');
 var mysql = require('mysql');
+var session = require('express-session');
+var bcrypt= require('bcryptjs');
 
 //bodyParser
 var bodyParser = require('body-parser');
@@ -11,14 +13,14 @@ app.use(bodyParser.urlencoded({ extended: false}));
 
 //database
 var Sequelize = require('sequelize');
-var connection = new Sequelize('', 'root');
+var connection = new Sequelize('account', 'root');
 
 //handlebars setup
-app.set('views', path.join(_dirname, 'views'));
+//app.set('views', path.join(__dirname, 'views'));
 app.engine('handlebars', exphbs({ defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.use("/public", express.static(_dirname + '/public'));
+app.use("/public", express.static(__dirname + '/public'));
 
 //sequelize user object
 var User = connection.define('user', {
@@ -45,7 +47,6 @@ var User = connection.define('user', {
         args: [5,10],
         msg: "Your password must be between 5-10 characters"
       },
-      isUppercase: true
     }
   },
   student: {
@@ -61,6 +62,19 @@ var User = connection.define('user', {
     }
   }
 });
+
+//add to Users table, this is part of my registering route
+/*User.create({
+  email: 'test2@email.com',
+  student: false,
+  teacher: false,
+  password: 'test1234',
+  firstname: 'Bruce',
+  lastname: 'Banner',
+}).then(function(task) {
+  task.save();
+});
+*/
 
 
 //routes
